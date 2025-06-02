@@ -1,6 +1,6 @@
 module Main where
 
-import qualified MyLib (someFunc)
+import qualified MyLib (testFunc)
 import Graphics.UI.GLUT
 
 display :: DisplayCallback
@@ -38,7 +38,7 @@ main = do
    initialWindowSize $= Size 800 600
    initialWindowPosition $= Position 100 100
    _ <- createWindow "hello opengl"
-   MyLib.someFunc
+   MyLib.testFunc
    myInit
    displayCallback $= display
    mainLoop

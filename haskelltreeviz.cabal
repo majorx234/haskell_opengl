@@ -12,7 +12,6 @@ cabal-version:      3.4
 --
 -- The name of the package.
 name:               haskelltreeviz
-
 -- The package version.
 -- See the Haskell package versioning policy (PVP) for standards
 -- guiding when and how versions should be incremented.
@@ -27,7 +26,7 @@ version:            0.1.0.0
 
 -- A longer description of the package.
 -- description:
-
+y
 -- The license under which the package is released.
 license:            MIT
 
@@ -52,7 +51,7 @@ extra-doc-files:    CHANGELOG.md
 -- extra-source-files:
 
 common warnings
-    ghc-options: 
+    ghc-options:
          -Wall
          -dynamic
 
@@ -62,7 +61,7 @@ library
     import:           warnings
 
     -- Modules exported by the library.
-    exposed-modules:  MyLib
+    exposed-modules:  TreeLib
 
     -- Modules included in this library but not exported.
     -- other-modules:
@@ -71,7 +70,8 @@ library
     -- other-extensions:
 
     -- Other library packages from which modules are imported.
-    build-depends:    base ^>=4.17.2.1
+    build-depends:    GLUT >= 2.7.0.16,
+                      base ^>=4.17.2.1
 
     -- Directories containing source files.
     hs-source-dirs:   src
@@ -94,9 +94,10 @@ executable haskelltreeviz
 
     -- Other library packages from which modules are imported.
     build-depends:
-        base ^>=4.17.2.1,
-        haskelltreeviz,
-        GLUT
+                  GLUT,
+                  GLUT >= 2.7.0.16,
+                  base ^>=4.17.2.1,
+                  haskelltreeviz
 
     -- Directories containing source files.
     hs-source-dirs:   app
@@ -128,5 +129,6 @@ test-suite haskelltreeviz-test
 
     -- Test dependencies.
     build-depends:
-        base ^>=4.17.2.1,
-        haskelltreeviz
+                  GLUT >= 2.7.0.16,
+                  base ^>=4.17.2.1,
+                  haskelltreeviz
