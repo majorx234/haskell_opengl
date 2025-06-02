@@ -3,6 +3,7 @@ module TreeLib (testFunc) where
 testFunc :: IO ()
 testFunc = putStrLn "testFunc"
 
+
 data Tree a = Leaf a
             | Branch (Tree a) (Tree a)
             deriving (Show)
