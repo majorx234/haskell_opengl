@@ -2,6 +2,20 @@ module Main where
 
 import qualified TreeLib (testFunc)
 import Graphics.UI.GLUT
+import Data.Int
+
+type Points3D = [(GLfloat, GLfloat, GLfloat)]
+
+terrain_points = generateFlatTerrain 100 100 0
+
+generateFlatTerrain :: Float -> Float -> Float -> Points3D
+generateFlatTerrain width height depth =
+    [(x, y, z) | x <- [-1, (-1 + 1/width)..1], y <- [-1, (-1 + 1 / height)..1], z <- [depth]]
+
+drawPoints :: Points3D -> IO ()
+drawPoints points = renderPrimitive Points
+                      $ mapM_ (\(x, y, z) -> vertex $ Vertex3 x y z) points
+
 
 display :: DisplayCallback
 display = do
@@ -18,6 +32,8 @@ display = do
       Vertex3 0.75 0.25 0.0,
       Vertex3 0.75 0.75 0.0,
       Vertex3 0.25 0.75 0.0]
+   color (Color3 0.0 0.0 (1.0 :: GLfloat))
+   drawPoints terrain_points
 
    flush
 
