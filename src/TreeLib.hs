@@ -1,4 +1,4 @@
-module TreeLib (testFunc) where
+module TreeLib (testFunc, BTree (Empty, BBranch), bin_tree_insert, getTreePos) where
 
 testFunc :: IO ()
 testFunc = putStrLn "testFunc"
@@ -35,3 +35,17 @@ bin_tree_insert :: BTree -> Int -> BTree
 bin_tree_insert Empty z = BBranch z Empty Empty
 bin_tree_insert (BBranch x streel streer) z | z < x = (BBranch x (bin_tree_insert streel z) streer)
                                              | otherwise = BBranch x streel (bin_tree_insert  streer z)
+
+type TreePos = (Float, Float, Float, Float)
+
+getTreePos :: BTree -> Float -> Float -> TreePos
+getTreePos Empty layer x_offset = (x_offset, layer, 0.0, 0.0)
+getTreePos (BBranch x Empty streer) layer x_offset  = let (_, _, distrl, distrr) = getTreePos streer (layer + 1.0) (x_offset + 1.0)
+                                                      in (x_offset, layer, 0.0, distrl + distrr + 1.0)
+getTreePos (BBranch x streel Empty) layer x_offset  = let (_, _, distll, distlr) = getTreePos streel (layer + 1.0) (x_offset)
+                                                      in (x_offset + distll + distlr + 1.0, layer, distll + distlr + 1.0, 0.0)
+getTreePos (BBranch x streel streer) layer x_offset  = let (_, _, distll, distlr) = getTreePos streel (layer + 1.0) (x_offset)
+                                                           in let dist_left = distll + distlr
+                                                                  in let (_, _, distrl, distrr) = getTreePos streer (layer + 1.0) (x_offset + 1.0 + dist_left)
+                                                                         in let dist_right = distrl + distrr + 1.0
+                                                                                in (x_offset + dist_left, layer, dist_left, dist_right)
