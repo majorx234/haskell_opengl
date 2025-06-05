@@ -73,7 +73,7 @@ library
 
     -- Other library packages from which modules are imported.
     build-depends:    GLUT >= 2.7.0.16,
-                      base ^>=4.17.2.1
+                      base ^>=4.16.4.0
 
     -- Directories containing source files.
     hs-source-dirs:   src
@@ -100,7 +100,7 @@ executable haskelltreeviz
     build-depends:
                   GLUT,
                   GLUT >= 2.7.0.16,
-                  base ^>=4.17.2.1,
+                  base ^>=4.16.4.0,
                   haskelltreeviz
 
     -- Directories containing source files.
@@ -134,5 +134,5 @@ test-suite haskelltreeviz-test
     -- Test dependencies.
     build-depends:
                   GLUT >= 2.7.0.16,
-                  base ^>=4.17.2.1,
+                  base ^>=4.16.4.0,
                   haskelltreeviz
