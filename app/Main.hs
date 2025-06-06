@@ -8,6 +8,7 @@ import Debug.Trace
 type Point3D = (GLfloat, GLfloat, GLfloat)
 type Points3D = [Point3D]
 type Circles = [(Point3D, Float)]
+type TextPoints = [(Point3D, String, Float)]
 
 terrain_points = generateFlatTerrain 100 100 0
 
@@ -16,15 +17,15 @@ generateFlatTerrain width height depth =
     [(x, y, z) | x <- [-1, (-1 + 1/width)..1], y <- [-1, (-1 + 1 / height)..1], z <- [depth]]
 
 -- TODO: need normalization here instead of /5.0
-nodePos2Point3D :: TreeLib.NodePos -> Point3D
-nodePos2Point3D (_, x , y) = (x/7.0 + 0.2, y/7.0 + 0.2 , 0.0)
+nodePos2Point3D :: Float -> Float -> TreeLib.NodePos -> Point3D
+nodePos2Point3D max_x max_y (_, x , y) = ((x + 1.0)/(max_x + 2.0), (y + 1.0)/(max_y + 2.0) , 0.0)
 
 nodePos2value :: TreeLib.NodePos -> Int
 nodePos2value (value, _ , _) = value
 
 
-generateFromNodePoses :: [TreeLib.NodePos] -> (Points3D, [Int])
-generateFromNodePoses xs = ((map nodePos2Point3D xs), (map nodePos2value xs))
+generateFromNodePoses :: [TreeLib.NodePos] -> Float -> Float -> (Points3D, [Int])
+generateFromNodePoses xs max_x max_y = ((map (nodePos2Point3D max_x max_y) xs), (map nodePos2value xs))
 
 drawPoints :: Points3D -> IO ()
 drawPoints points = renderPrimitive Points
@@ -40,8 +41,13 @@ renderFan points = do
 
 renderCircle (centre, radius, divs) = renderFan (centre : calcCircle centre radius divs)
 
+-- renderText (centre, text, font_size) = 
+
 drawCircle :: Circles -> IO ()
 drawCircle circles_list = mapM_ renderCircle $ map (\((x, y, z), radius) -> ((x,y), radius, 64 )) circles_list
+
+-- drawTextPoints :: TextPoints -> IO ()
+-- drawTextPoints text_point_list = mapM_ renderText $ map (\((x, y, z), text, font_size -> ((x,y), text, font_size ))text_point_list
 
 display :: DisplayCallback
 display = do
@@ -61,14 +67,18 @@ display = do
       Vertex3 0.25 0.75 0.0]
    -}
    color (Color3 0.0 0.0 (1.0 :: GLfloat))
-   let tree = foldl TreeLib.bin_tree_insert TreeLib.Empty [2,5,17,1,4,3]
+   let tree = foldl TreeLib.bin_tree_insert TreeLib.Empty [10,2,5,17,1,4,3]
    let (_, tree_pos_list) = TreeLib.getTreePos tree 0.0 0.0
    let node_poses = map TreeLib.treePos2nodePos tree_pos_list
    trace (show node_poses) $ pure ()
-   let (tree_points, tree_values) = generateFromNodePoses node_poses
+   let max_x = foldl max 0 (map (\(x, y, z) -> y) node_poses)
+   let max_y = foldl max 0 (map (\(x, y, z) -> z) node_poses)
+   let (tree_points, tree_values) = generateFromNodePoses node_poses max_x max_y
+   trace (show tree_points) $ pure ()
    let num_tree_points = length tree_points
    -- drawPoints tree_points
    drawCircle $ zip tree_points $ replicate num_tree_points (0.1 / fromIntegral(num_tree_points))
+   -- drawValues $ zip tree_points 
 
    flush
 
