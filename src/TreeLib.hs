@@ -48,7 +48,7 @@ getTreePos (BBranch x streel Empty) layer x_offset  = let ((_, _, distll, distlr
                                                       in let current_pos = (x_offset + distll + distlr + 1.0, layer, distll + distlr + 1.0, 0.0, x)
                                                          in (current_pos, current_pos: xsl)
 getTreePos (BBranch x streel streer) layer x_offset  = let ((_, _, distll, distlr, _), xsl) = getTreePos streel (layer + 1.0) (x_offset)
-                                                           in let dist_left = distll + distlr
+                                                           in let dist_left = distll + 1.0 + distlr
                                                               in let ((_, _, distrl, distrr, _), xsr) = getTreePos streer (layer + 1.0) (x_offset + 1.0 + dist_left)
                                                                  in let dist_right = distrl + distrr + 1.0
                                                                     in let current_pos = (x_offset + dist_left, layer, dist_left, dist_right, x)
