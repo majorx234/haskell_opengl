@@ -3,9 +3,11 @@ module Main where
 import qualified TreeLib (testFunc, NodePos, BTree (Empty, BBranch), bin_tree_insert, getTreePos, treePos2nodePos)
 import Graphics.UI.GLUT
 import Data.Int
+import Debug.Trace
 
 type Point3D = (GLfloat, GLfloat, GLfloat)
 type Points3D = [Point3D]
+type Circles = [(Point3D, Float)]
 
 terrain_points = generateFlatTerrain 100 100 0
 
@@ -15,7 +17,7 @@ generateFlatTerrain width height depth =
 
 -- TODO: need normalization here instead of /5.0
 nodePos2Point3D :: TreeLib.NodePos -> Point3D
-nodePos2Point3D (_, x , y) = (x/6.0 + 0.2, y/6.0 + 0.2 , 0.0)
+nodePos2Point3D (_, x , y) = (x/7.0 + 0.2, y/7.0 + 0.2 , 0.0)
 
 nodePos2value :: TreeLib.NodePos -> Int
 nodePos2value (value, _ , _) = value
@@ -28,6 +30,18 @@ drawPoints :: Points3D -> IO ()
 drawPoints points = renderPrimitive Points
                       $ mapM_ (\(x, y, z) -> vertex $ Vertex3 x y z) points
 
+calcCircle (x, y) radius divs = map toPoint angles where
+    arc       = 2.0 * pi / fromIntegral divs
+    toPoint a = (x + cos a * radius, y + sin a * radius)
+    angles    = map ((*arc) . fromIntegral) [0..divs]
+
+renderFan points = do
+    renderPrimitive TriangleFan $ mapM_ (\(x, y) -> vertex (Vertex2 x y)) points
+
+renderCircle (centre, radius, divs) = renderFan (centre : calcCircle centre radius divs)
+
+drawCircle :: Circles -> IO ()
+drawCircle circles_list = mapM_ renderCircle $ map (\((x, y, z), radius) -> ((x,y), radius, 64 )) circles_list
 
 display :: DisplayCallback
 display = do
@@ -50,9 +64,11 @@ display = do
    let tree = foldl TreeLib.bin_tree_insert TreeLib.Empty [2,5,17,1,4,3]
    let (_, tree_pos_list) = TreeLib.getTreePos tree 0.0 0.0
    let node_poses = map TreeLib.treePos2nodePos tree_pos_list
+   trace (show node_poses) $ pure ()
    let (tree_points, tree_values) = generateFromNodePoses node_poses
-   -- drawPoints terrain_points
-   drawPoints tree_points
+   let num_tree_points = length tree_points
+   -- drawPoints tree_points
+   drawCircle $ zip tree_points $ replicate num_tree_points (0.1 / fromIntegral(num_tree_points))
 
    flush
 
