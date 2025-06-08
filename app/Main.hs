@@ -16,7 +16,6 @@ generateFlatTerrain :: Float -> Float -> Float -> Points3D
 generateFlatTerrain width height depth =
     [(x, y, z) | x <- [-1, (-1 + 1/width)..1], y <- [-1, (-1 + 1 / height)..1], z <- [depth]]
 
--- TODO: need normalization here instead of /5.0
 nodePos2Point3D :: Float -> Float -> TreeLib.NodePos -> Point3D
 nodePos2Point3D max_x max_y (_, x , y) = ((x + 1.0)/(max_x + 2.0), (y + 1.0)/(max_y + 2.0) , 0.0)
 
@@ -54,31 +53,15 @@ display = do
    -- clear all pixels
    clear [ ColorBuffer ]
 
-   {-
-   -- draw white polygon (rectangle) with corners at
-   -- (0.25, 0.25, 0.0) and (0.75, 0.75, 0.0)
-   color (Color3 1.0 1.0 (1.0 :: GLfloat))
-   -- resolve overloading, not needed in "real" programs
-   let vertex3f = vertex :: Vertex3 GLfloat -> IO ()
-   renderPrimitive Polygon $ mapM_ vertex3f [
-      Vertex3 0.25 0.25 0.0,
-      Vertex3 0.75 0.25 0.0,
-      Vertex3 0.75 0.75 0.0,
-      Vertex3 0.25 0.75 0.0]
-   -}
    color (Color3 0.0 0.0 (1.0 :: GLfloat))
    let tree = foldl TreeLib.bin_tree_insert TreeLib.Empty [10,2,5,17,1,4,3]
    let (_, tree_pos_list) = TreeLib.getTreePos tree 0.0 0.0
    let node_poses = map TreeLib.treePos2nodePos tree_pos_list
-   trace (show node_poses) $ pure ()
    let max_x = foldl max 0 (map (\(x, y, z) -> y) node_poses)
    let max_y = foldl max 0 (map (\(x, y, z) -> z) node_poses)
    let (tree_points, tree_values) = generateFromNodePoses node_poses max_x max_y
-   trace (show tree_points) $ pure ()
    let num_tree_points = length tree_points
-   -- drawPoints tree_points
    drawCircle $ zip tree_points $ replicate num_tree_points (0.1 / fromIntegral(num_tree_points))
-   -- drawValues $ zip tree_points 
 
    flush
 
