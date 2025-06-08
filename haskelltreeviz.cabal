@@ -60,9 +60,9 @@ library
     import:           warnings
 
     -- Modules exported by the library.
-    exposed-modules:  TreeLib
+    exposed-modules:  TreeLib, RenderTree
     ghc-options:
-         -dynamic-too
+         -dynamic
 
 
     -- Modules included in this library but not exported.
