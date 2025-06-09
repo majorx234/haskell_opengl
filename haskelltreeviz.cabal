@@ -98,10 +98,9 @@ executable haskelltreeviz
 
     -- Other library packages from which modules are imported.
     build-depends:
-                  GLUT,
+                  haskelltreeviz,
                   GLUT >= 2.7.0.16,
                   base ^>=4.16.4.0,
-                  haskelltreeviz
 
     -- Directories containing source files.
     hs-source-dirs:   app

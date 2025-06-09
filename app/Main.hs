@@ -20,9 +20,8 @@ display = do
    let (tree_points, tree_values) = RenderTree.generateFromNodePoses node_poses max_x max_y
    let num_tree_points = length tree_points
    let edges = RenderTree.normalizeEdges tree_edges max_x max_y
+   RenderTree.drawEdges edges
    RenderTree.drawCircle $ zip tree_points $ replicate num_tree_points (0.1 / fromIntegral(num_tree_points))
-   -- RenderTree.drawEdges edges
-
 
    flush
 

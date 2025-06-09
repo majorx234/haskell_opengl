@@ -1,4 +1,4 @@
-imodule RenderTree (Point3D, Points3D, Circles, TextPoints, generateFromNodePoses, normalizeEdges, drawPoints, drawCircle, drawEdges) where
+module RenderTree (Point3D, Points3D, Circles, TextPoints, generateFromNodePoses, normalizeEdges, drawPoints, drawCircle, drawEdges) where
 
 import Graphics.UI.GLUT
 import qualified TreeLib (NodePos, BTree (Empty, BBranch), bin_tree_insert, getTreePos, treePos2nodePos)

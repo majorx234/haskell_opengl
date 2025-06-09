@@ -38,6 +38,8 @@ type TreeEdge = ((Float, Float, Float),(Float, Float, Float))
 
 getTreePos :: BTree -> Float -> Float -> (TreePos, [TreePos], [TreeEdge])
 getTreePos Empty layer x_offset = ((x_offset, layer, 0.0, 0.0, 0), [], [])
+getTreePos (BBranch x Empty Empty) layer x_offset = let current_pos = (x_offset, layer, 0.0, 0.0, x)
+                                                    in (current_pos, [current_pos], [])
 getTreePos (BBranch x Empty streer) layer x_offset  = let ((xr, yr, distrl, distrr, _), xsr, edgesr) = getTreePos streer (layer + 1.0) (x_offset + 1.0)
                                                       in let current_pos = (x_offset, layer, 0.0, 0.0, x)
                                                          in (current_pos, current_pos: xsr, ((x_offset,layer,1.0), (xr,yr,1.0)): edgesr)
