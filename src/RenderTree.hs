@@ -10,10 +10,10 @@ type Circles = [(Point3D, Float)]
 type TextPoints = [(Point3D, String, Float)]
 
 nodePos2Point3D :: Float -> Float -> TreeLib.NodePos -> Point3D
-nodePos2Point3D max_x max_y (_, x , y) = ((x + 1.0)/(max_x + 2.0), (y + 1.0)/(max_y + 2.0) , 0.0)
+nodePos2Point3D max_x max_y (_, x , y) = ((x + 1.0)/(max_x + 2.0), (1 - (y + 1.0)/(max_y + 2.0)) , 0.0)
 
 normalizePoint3D :: Point3D -> Float -> Float -> Point3D
-normalizePoint3D (x , y, z) max_x max_y = ((x + 1.0)/(max_x + 2.0), (y + 1.0)/(max_y + 2.0) , 0.0)
+normalizePoint3D (x , y, z) max_x max_y = ((x + 1.0)/(max_x + 2.0), (1 - (y + 1.0)/(max_y + 2.0)) , 0.0)
 
 nodePos2value :: TreeLib.NodePos -> Int
 nodePos2value (value, _ , _) = value
