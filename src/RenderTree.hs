@@ -52,3 +52,14 @@ drawCircle circles_list = mapM_ renderCircle $ map (\((x, y, z), radius) -> ((x,
 
 -- drawTextPoints :: TextPoints -> IO ()
 -- drawTextPoints text_point_list = mapM_ renderText $ map (\((x, y, z), text, font_size -> ((x,y), text, font_size ))text_point_list
+
+
+-- position, string to be printed, font size
+drawText :: TextPoints -> IO ()
+drawText [] = return ()
+drawText (((x,y,_),text,font_size):ts) = do
+    loadIdentity
+    color (Color3 0 0 1)
+    rasterPos (Vertex2 x y)
+    renderString TimesRoman10 text
+    drawText ts
