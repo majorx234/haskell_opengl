@@ -59,7 +59,7 @@ drawText :: TextPoints -> IO ()
 drawText [] = return ()
 drawText (((x,y,_),text,font_size):ts) = do
     loadIdentity
-    color (Color3 0 0 1)
+    color (Color3 (0 :: GLint) (0 :: GLint) (255 :: GLint))
     rasterPos (Vertex2 x y)
     renderString TimesRoman10 text
     drawText ts
