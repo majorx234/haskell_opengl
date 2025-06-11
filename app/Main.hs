@@ -22,7 +22,8 @@ display = do
    let edges = RenderTree.normalizeEdges tree_edges max_x max_y
    RenderTree.drawEdges edges
    RenderTree.drawCircle $ zip tree_points $ replicate num_tree_points (0.1 / fromIntegral(num_tree_points))
-   RenderTree.drawText $ zip3 tree_points (map show tree_values) $ replicate num_tree_points (0.4 / fromIntegral(num_tree_points))
+   RenderTree.drawText $ zip3 tree_points (map show tree_values) $ replicate num_tree_points (0.3 / fromIntegral(num_tree_points))
+
 
    flush
 
