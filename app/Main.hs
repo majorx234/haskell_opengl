@@ -1,7 +1,7 @@
 module Main where
 
 import qualified TreeLib (NodePos, BTree (Empty, BBranch), bin_tree_insert, getTreePos, treePos2nodePos)
-import qualified RenderTree (generateFromNodePoses,  normalizeEdges, drawCircle, drawEdges)
+import qualified RenderTree (generateFromNodePoses,  normalizeEdges, drawCircle, drawEdges, drawText)
 import Graphics.UI.GLUT
 import Data.Int
 import Debug.Trace
@@ -12,7 +12,7 @@ display = do
    clear [ ColorBuffer ]
 
    color (Color3 0.0 0.0 (1.0 :: GLfloat))
-   let tree = foldl TreeLib.bin_tree_insert TreeLib.Empty [10,2,5,17,1,4,3]
+   let tree = foldl TreeLib.bin_tree_insert TreeLib.Empty [10,2,5,17,1,4,3,8,9]
    let (_, tree_pos_list, tree_edges) = TreeLib.getTreePos tree 0.0 0.0
    let node_poses = map TreeLib.treePos2nodePos tree_pos_list
    let max_x = foldl max 0 (map (\(x, y, z) -> y) node_poses)
@@ -22,6 +22,7 @@ display = do
    let edges = RenderTree.normalizeEdges tree_edges max_x max_y
    RenderTree.drawEdges edges
    RenderTree.drawCircle $ zip tree_points $ replicate num_tree_points (0.1 / fromIntegral(num_tree_points))
+   RenderTree.drawText $ zip3 tree_points (map show tree_values) $ replicate num_tree_points (0.4 / fromIntegral(num_tree_points))
 
    flush
 
