@@ -62,3 +62,12 @@ drawText (((x,y,_),text, font_size):ts) = do
     rasterPos (Vertex2 x y)
     renderString TimesRoman10 text
     drawText ts
+
+drawText2 :: TextPoints -> IO ()
+drawText2 [] = return ()
+drawText2 (((x,y,_),text, font_size):ts) = do
+    preservingMatrix $ do
+      color (Color3 (1.0 :: GLfloat) 0.0 0.0 )
+      rasterPos (Vertex2 x y)
+      renderString TimesRoman10 text
+      drawText2 ts
